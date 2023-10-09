@@ -1,24 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+// import "./App.css";
+
+import Home from "./Home";
+import Guns from "./Guns";
+import GunAdd from "./GunAdd";
+import AgentAdd from "./AgentAdd";
+import AgentEdit from "./AgentEdit";
+import Maps from "./Maps";
+import MapAdd from "./MapAdd";
+import Ranks from "./Ranks";
+import RankAdd from "./RankAdd";
+import Skins from "./Skins";
+import SkinAdd from "./SkinAdd";
+import Login from "./Login";
+import Signup from "./Signup";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/agents/:id" element={<AgentEdit />} />
+        <Route path="/add_agent" element={<AgentAdd />} />
+        <Route path="/guns" element={<Guns />} />
+        <Route path="/add_gun" element={<GunAdd />} />
+        <Route path="/maps" element={<Maps />} />
+        <Route path="/add_map" element={<MapAdd />} />
+        <Route path="/ranks" element={<Ranks />} />
+        <Route path="/add_rank" element={<RankAdd />} />
+        <Route path="/skins" element={<Skins />} />
+        <Route path="/add_skin" element={<SkinAdd />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+      </Routes>
+    </Router>
   );
 }
 
