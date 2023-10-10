@@ -55,7 +55,7 @@ export default function Guns() {
     if (guns && guns.length > 0) {
       guns.forEach((gun) => {
         if (!options.includes(gun.category)) {
-          options.push(gun.role);
+          options.push(gun.category);
         }
       });
     }
@@ -77,92 +77,91 @@ export default function Guns() {
 
   return (
     <>
-      <Header title="Guns" page="guns" text="" />
-      <Group position="apart">
-        <Title order={3} align="center">
-          Guns
-        </Title>
-        {isAdmin && (
-          <Button component={Link} to="/add_gun" color="green">
-            Add New Gun
-          </Button>
-        )}
-        {/* <Button component={Link} to="/skin" color="green">
-          Skin
-        </Button> */}
-      </Group>
-      <Space h="40px" />
-      <LoadingOverlay visible={isLoading} />
-      <Grid>
-        {currentGuns
-          ? currentGuns.map((gun) => {
+      <Container>
+        <Header title="Guns" page="guns" text="" />
+        <Space h="20px" />
+
+        <Group position="apart">
+          <Title order={3} align="center">
+            <strong>GUNS</strong>
+          </Title>
+          {isAdmin && (
+            <Button component={Link} to="/add_gun" color="green">
+              <strong>ADD NEW GUN</strong>
+            </Button>
+          )}
+        </Group>
+        <Space h="20px" />
+        <Group>
+          <select
+            value={category}
+            onChange={(event) => {
+              setCategory(event.target.value);
+              // setCurrentPage(1);
+            }}
+          >
+            <option value="">All Category</option>
+            {categoryOptions.map((category) => {
               return (
-                <Grid.Col key={gun.id} lg={4} md={6} sm={6} xs={6}>
-                  <Card.Section>
-                    {gun.image && gun.image !== "" ? (
-                      <>
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              );
+            })}
+          </select>
+        </Group>
+        <Space h="20px" />
+        <LoadingOverlay visible={isLoading} />
+        <Grid>
+          {currentGuns
+            ? currentGuns.map((gun) => {
+                return (
+                  <Grid.Col key={gun.id} lg={4} md={6} sm={6} xs={6}>
+                    <Card shadow="sm" padding="md" radius="md" withBorder>
+                      <Card.Section>
                         <Image
                           src={"http://localhost:5000/" + gun.image}
-                          width="250px"
-                          height="100px"
+                          width="100%"
                         />
-                      </>
-                    ) : (
-                      <Image
-                        src={
-                          "https://www.aachifoods.com/templates/default-new/images/no-prd.jpg"
-                        }
-                        width="250px"
-                        height="100px"
-                      />
-                    )}
-                  </Card.Section>
-                  <Group position="apart" mt="md" mb="xs">
-                    {/* <Title order={5}>{agent.name}</Title> */}
-                    <Badge color="green" align="center">
-                      {gun.name}
-                    </Badge>
-                    {/* <Badge color="yellow">{gun.role}</Badge> */}
-                  </Group>
-                  <Text size="sm" color="dimmed">
-                    {gun.description}
-                  </Text>
-                  <Space h="20px" />
-                  {isAdmin && (
-                    <>
-                      <Space h="20px" />
-                      <Group position="apart">
-                        <Button
-                          component={Link}
-                          to={"/guns/" + gun._id}
-                          color="blue"
-                          size="xs"
-                          radius="50px"
-                        >
-                          Edit
-                        </Button>
-                        <Button
-                          color="red"
-                          size="xs"
-                          radius="50px"
-                          onClick={() => {
-                            deleteMutation.mutate({
-                              id: gun._id,
-                              token: currentUser ? currentUser.token : "",
-                            });
-                          }}
-                        >
-                          Delete
-                        </Button>
+                      </Card.Section>
+                      <Group position="center" mt="md" mb="xs">
+                        <strong>
+                          <h3>
+                            <strong>{gun.name}</strong>
+                          </h3>
+                        </strong>
                       </Group>
-                    </>
-                  )}
-                  {/* </Card> */}
-                </Grid.Col>
-              );
-            })
-          : null}
-      </Grid>
+                      <Space h="20px" />
+                      {isAdmin && (
+                        <>
+                          <Space h="20px" />
+                          <Group position="apart">
+                            <Group>
+                              <Badge color="yellow">{gun.category}</Badge>
+                            </Group>
+                            <Button
+                              color="red"
+                              size="xs"
+                              radius="50px"
+                              onClick={() => {
+                                deleteMutation.mutate({
+                                  id: gun._id,
+                                  token: currentUser ? currentUser.token : "",
+                                });
+                              }}
+                            >
+                              Delete
+                            </Button>
+                          </Group>
+                        </>
+                      )}
+                    </Card>
+                  </Grid.Col>
+                );
+              })
+            : null}
+        </Grid>
+      </Container>
     </>
   );
 }

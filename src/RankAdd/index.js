@@ -133,9 +133,11 @@ export default function RankAdd() {
           </Dropzone>
         )}
         <Space h="20px" />
-        <Button fullWidth onClick={handleAddNewRank}>
-          Add New
-        </Button>
+        {isAdmin ? (
+          <Button fullWidth onClick={handleAddNewRank}>
+            Add New
+          </Button>
+        ) : null}
       </Card>
       <Space h="50px" />
       <Group position="center">

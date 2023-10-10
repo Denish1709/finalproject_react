@@ -12,8 +12,14 @@ import Ranks from "./Ranks";
 import RankAdd from "./RankAdd";
 import Skins from "./Skins";
 import SkinAdd from "./SkinAdd";
+// import SkinDetail from "./detail_skin";
+import SkinDetail from "./SkinDetail";
 import Login from "./Login";
 import Signup from "./Signup";
+import PaymentVerification from "./PaymentVerification";
+import Orders from "./Order";
+import Carts from "./Cart";
+import Checkout from "./Checkout";
 
 function App() {
   return (
@@ -30,8 +36,13 @@ function App() {
         <Route path="/add_rank" element={<RankAdd />} />
         <Route path="/skins" element={<Skins />} />
         <Route path="/add_skin" element={<SkinAdd />} />
+        <Route path="/skins/:id" element={<SkinDetail />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/verify-payment" element={<PaymentVerification />} />
+        <Route path="/orders" element={<Orders />} />
+        <Route path="/carts" element={<Carts />} />
+        <Route path="/checkout" element={<Checkout />} />
       </Routes>
     </Router>
   );

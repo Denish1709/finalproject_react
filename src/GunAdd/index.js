@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   Container,
   Title,
@@ -15,14 +15,26 @@ import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import { Link, useNavigate } from "react-router-dom";
 import { notifications } from "@mantine/notifications";
 import { useMutation } from "@tanstack/react-query";
+import { useCookies } from "react-cookie";
+
 import { addGun, addGunImage } from "../api/gun";
 
 function GunAdd() {
+  const [cookies] = useCookies(["currentUser"]);
+  const { currentUser } = cookies;
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [image, setImage] = useState("");
   const [uploading, setUploading] = useState(false);
+
+  const isAdmin = useMemo(() => {
+    return cookies &&
+      cookies.currentUser &&
+      cookies.currentUser.role === "admin"
+      ? true
+      : false;
+  }, [cookies]);
 
   const createMutation = useMutation({
     mutationFn: addGun,
@@ -31,7 +43,7 @@ function GunAdd() {
         title: "New Gun Added",
         color: "green",
       });
-      navigate("/");
+      navigate("/guns");
     },
     onError: (error) => {
       notifications.show({
@@ -116,14 +128,16 @@ function GunAdd() {
           value={category}
           placeholder="Enter the category at here"
           label="Category"
-          description="What is the category for this"
+          description="What is the category for this gun"
           withAsterisk
           onChange={(event) => setCategory(event.target.value)}
         />
         <Space h="20px" />
-        <Button fullWidth onClick={handleAddNewGun}>
-          Add New
-        </Button>
+        {isAdmin ? (
+          <Button fullWidth onClick={handleAddNewGun}>
+            Add New
+          </Button>
+        ) : null}
       </Card>
       <Space h="50px" />
       <Group position="center">

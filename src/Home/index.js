@@ -1,28 +1,34 @@
 import { Container, Title, Space, Divider, Group, Button } from "@mantine/core";
 
 import Header from "../Header";
-import Footer from "../Footer";
-// import Guns from "../Guns";
 import Agents from "../Agents";
 
 function Home() {
   return (
     <div className="App">
-      <Container>
+      {/* <Container>
         <Group>
-          {/* <Title>Valorant</Title> */}
           <Space h="50px" />
           <Header />
-          {/* <Button to="/" variant="danger">
-            Create Account
-          </Button> */}
           <Space h="30px" />
           <Agents />
           <Space h="30px" />
-          {/* <Guns /> */}
         </Group>
+      </Container> */}
+
+      <Container>
+        <Space h="50px" />
+        <Group position="center">
+          <h1>
+            <strong>WELCOME TO VALORANT</strong>
+          </h1>{" "}
+        </Group>
+        <Space h="30px" />
+        <Header page="home" />
+        <Space h="50px" />
+        <Agents />
+        <Space h="50px" />
       </Container>
-      {/* <Footer /> */}
     </div>
   );
 }

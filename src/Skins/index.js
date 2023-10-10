@@ -19,6 +19,8 @@ import { notifications } from "@mantine/notifications";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchSkins, deleteSkin } from "../api/skin";
+import { addToCart, getCartItems } from "../api/cart";
+
 import { useCookies } from "react-cookie";
 
 export default function Skins() {
@@ -26,13 +28,17 @@ export default function Skins() {
   const { currentUser } = cookies;
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [name, setName] = useState("");
-  const [rank, setRank] = useState("");
-  const [image, setImage] = useState("");
+  const [skinName, setSkinName] = useState("");
+  const [bundlePrice, setBundlePrice] = useState("");
+  const [image1, setImage1] = useState("");
   const [currentSkins, setCurrentSkins] = useState([]);
   const { isLoading, data: skins } = useQuery({
     queryKey: ["skins"],
     queryFn: () => fetchSkins(),
+  });
+  const { data: cart = [] } = useQuery({
+    queryKey: ["cart"],
+    queryFn: getCartItems,
   });
 
   const isAdmin = useMemo(() => {
@@ -45,23 +51,36 @@ export default function Skins() {
 
   useEffect(() => {
     let newList = skins ? [...skins] : [];
-    if (rank !== "") {
-      newList = newList.filter((s) => s.rank === rank);
+    if (skinName !== "") {
+      newList = newList.filter((s) => s.skinName === skinName);
     }
     setCurrentSkins(newList);
-  }, [skins, rank]);
+  }, [skins, skinName]);
 
-  const rankOptions = useMemo(() => {
+  const skinNameOptions = useMemo(() => {
     let options = [];
     if (skins && skins.length > 0) {
       skins.forEach((skin) => {
-        if (!options.includes(skin.rank)) {
-          options.push(skin.rank);
+        if (!options.includes(skin.skinName)) {
+          options.push(skin.skinName);
         }
       });
     }
     return options;
   }, [skins]);
+
+  const addToCartMutation = useMutation({
+    mutationFn: addToCart,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["cart"],
+      });
+      notifications.show({
+        title: "Skin Added to Cart",
+        color: "green",
+      });
+    },
+  });
 
   const deleteMutation = useMutation({
     mutationFn: deleteSkin,
@@ -78,92 +97,117 @@ export default function Skins() {
 
   return (
     <>
-      <Header title="Skin" page="skins" text="" />
+      <Container>
+        <Header title="Skin" page="skins" text="" />
 
-      <Group position="apart">
-        <Title order={3} align="center">
-          SKINS
-        </Title>
-        {isAdmin && (
-          <Button component={Link} to="/add_skin" color="green">
-            ADD NEW SKIN
-          </Button>
-        )}
-      </Group>
-      <Space h="20px" />
-      <Table>
-        <thead>
-          <tr>
-            <th>
-              <h1>Bundle Name</h1>
-            </th>
-            <th>
-              <h1>Bundle Image</h1>
-            </th>
-            <th>
-              <h1>Button </h1>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
+        <Group position="apart">
+          <Title order={3} align="center">
+            SKINS
+          </Title>
+          {isAdmin && (
+            <Button component={Link} to="/add_skin" color="green">
+              ADD NEW SKIN
+            </Button>
+          )}
+        </Group>
+        <Space h="20px" />
+
+        <Grid>
           {currentSkins
             ? currentSkins.map((skin) => {
                 return (
-                  <tr key={skin._id} lg={3} md={6} sm={6} xs={6}>
-                    <td>
-                      <h3>{skin.name}</h3>
-                    </td>
-                    <td>
-                      {skin.image1 && skin.image1 !== "" ? (
-                        <>
+                  <Grid.Col key={skin._id} lg={3} md={6} sm={6} xs={6}>
+                    <Card shadow="sm" padding="md" radius="md" withBorder>
+                      <Card.Section>
+                        {skin.image1 && skin.image1 !== "" ? (
+                          <>
+                            <Image
+                              src={"http://localhost:5000/" + skin.image1}
+                              width="100%"
+                              // height="550px"
+                            />
+                          </>
+                        ) : (
                           <Image
-                            src={"http://localhost:5000/" + skin.image1}
-                            width="950px"
-                            height="550px"
+                            src={
+                              "https://www.aachifoods.com/templates/default-new/images/no-prd.jpg"
+                            }
+                            width="300px"
+                            // height="200px"
                           />
-                        </>
-                      ) : (
-                        <Image
-                          src={
-                            "https://www.aachifoods.com/templates/default-new/images/no-prd.jpg"
-                          }
-                          width="300px"
-                          // height="200px"
-                        />
-                      )}
-                    </td>
-                    <td>
-                      {isAdmin && (
-                        <>
-                          <Space h="20px" />
-                          <Group position="apart">
-                            <Button
-                              color="red"
-                              size="xs"
-                              radius="50px"
-                              onClick={() => {
-                                deleteMutation.mutate({
-                                  id: skin._id,
-                                  token: currentUser ? currentUser.token : "",
-                                });
-                              }}
-                            >
-                              Delete
-                            </Button>
-                          </Group>
-                        </>
-                      )}
-                      <Space h="30px" />
-                      <Button color="blue" size="xs" radius="50px">
-                        Detail
-                      </Button>
-                    </td>
-                  </tr>
+                        )}
+                      </Card.Section>
+                      <Group position="apart" mt="md" mb="xs">
+                        <Group position="center">
+                          <h5>{skin.skinName}</h5>
+                          <Badge color="green">{skin.bundlePrice}</Badge>
+
+                          {isAdmin && (
+                            <>
+                              <Space h="20px" />
+                              <Button
+                                color="red"
+                                // size="xs"
+                                // radius="50px"
+                                fullWidth
+                                onClick={() => {
+                                  deleteMutation.mutate({
+                                    id: skin._id,
+                                    token: currentUser ? currentUser.token : "",
+                                  });
+                                }}
+                              >
+                                Delete
+                              </Button>
+                            </>
+                          )}
+                          <Button
+                            component={Link}
+                            to={"/skins/" + skin._id}
+                            color="green"
+                            fullWidth
+                          >
+                            Detail
+                          </Button>
+                        </Group>
+
+                        <Button
+                          fullWidth
+                          onClick={() => {
+                            // pop a messsage if user is not logged in
+                            if (cookies && cookies.currentUser) {
+                              addToCartMutation.mutate(skins);
+                            } else {
+                              notifications.show({
+                                title: "Please login to proceed",
+                                message: (
+                                  <>
+                                    <Button
+                                      color="red"
+                                      onClick={() => {
+                                        navigate("/login");
+                                        notifications.clean();
+                                      }}
+                                    >
+                                      Click here to login
+                                    </Button>
+                                  </>
+                                ),
+                                color: "red",
+                              });
+                            }
+                          }}
+                        >
+                          Add To Cart
+                        </Button>
+                      </Group>
+                    </Card>
+                  </Grid.Col>
                 );
               })
             : null}
-        </tbody>
-      </Table>
+        </Grid>
+      </Container>
     </>
   );
 }

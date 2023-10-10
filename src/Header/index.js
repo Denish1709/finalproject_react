@@ -17,8 +17,6 @@ export default function Header({ page = "" }) {
   const [cookies, setCookies, removeCookies] = useCookies(["currentUser"]);
   return (
     <div className="header">
-      {/* <Title align="left">Valorant</Title> */}
-      <Space h="20px" />
       <Group position="center">
         <Button
           component={Link}
@@ -55,59 +53,76 @@ export default function Header({ page = "" }) {
         >
           Skins
         </Button>
-        {cookies && cookies.currentUser ? (
-          <>
-            <Group>
-              <Avatar
-                src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=255&q=80"
-                radius="xl"
-              />
-              <div style={{ flex: 1 }}>
-                <Text size="sm" fw={500}>
-                  {cookies.currentUser.name}
-                </Text>
+        <Button
+          component={Link}
+          to="/orders"
+          variant={page === "orders" ? "filled" : "light"}
+        >
+          My Orders
+        </Button>
+        <Button
+          component={Link}
+          to="/carts"
+          variant={page === "carts" ? "filled" : "light"}
+        >
+          My Cart
+        </Button>
 
-                <Text c="dimmed" size="xs">
-                  {cookies.currentUser.email}
-                </Text>
-              </div>
-            </Group>
-            <Button
-              variant={"light"}
-              onClick={() => {
-                // clear the currentUser cookie to logout
-                removeCookies("currentUser");
+        <Group position="right">
+          {cookies && cookies.currentUser ? (
+            <>
+              <Group>
+                <Avatar
+                  src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=255&q=80"
+                  radius="xl"
+                />
+                <div style={{ flex: 1 }}>
+                  <Text size="sm" fw={500}>
+                    {cookies.currentUser.name}
+                  </Text>
 
-                // clear the chat
-                // clearCartItems();
+                  {/* <Text c="dimmed" size="xs">
+                    {cookies.currentUser.email}
+                  </Text> */}
+                </div>
+              </Group>
+              <Button
+                variant={"light"}
+                onClick={() => {
+                  // clear the currentUser cookie to logout
+                  removeCookies("currentUser");
 
-                // redirect to home page
-                navigate("/");
-              }}
-            >
-              Logout
-            </Button>
-          </>
-        ) : (
-          <>
-            <Button
-              component={Link}
-              to="/login"
-              variant={page === "login" ? "filled" : "light"}
-            >
-              Login
-            </Button>
-            <Button
-              component={Link}
-              to="/signup"
-              variant={page === "signup" ? "filled" : "light"}
-            >
-              Sign Up
-            </Button>
-          </>
-        )}
+                  // clear the chat
+                  // clearCartItems();
+
+                  // redirect to home page
+                  navigate("/");
+                }}
+              >
+                Logout
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button
+                component={Link}
+                to="/login"
+                variant={page === "login" ? "filled" : "light"}
+              >
+                Login
+              </Button>
+              <Button
+                component={Link}
+                to="/signup"
+                variant={page === "signup" ? "filled" : "light"}
+              >
+                Sign Up
+              </Button>
+            </>
+          )}
+        </Group>
       </Group>
-      <Space h="20px" />
+      <Space h="50px" />
       <Divider />
     </div>
   );

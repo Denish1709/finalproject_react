@@ -77,53 +77,55 @@ export default function Maps() {
 
   return (
     <>
-      <Header title="Map" page="maps" text="" />
+      <Container>
+        <Header title="Map" page="maps" text="" />
 
-      <Group position="apart">
-        <Title order={3} align="center">
-          Maps
-        </Title>
-        {isAdmin && (
-          <Button component={Link} to="/add_map" color="green">
-            Add New
-          </Button>
-        )}
-      </Group>
-      <Space h="20px" />
-      <LoadingOverlay visible={isLoading} />
-      <Grid>
-        {currentMaps
-          ? currentMaps.map((map) => {
-              return (
-                <Grid.Col key={map._id} lg={3} md={6} sm={6} xs={6}>
-                  <Card.Section>
-                    {map.image && map.image !== "" ? (
-                      <>
-                        <Image
-                          src={"http://localhost:5000/" + map.image}
-                          width="250px"
-                          height="200px"
-                        />
-                      </>
-                    ) : (
-                      <Image
-                        src={
-                          "https://www.aachifoods.com/templates/default-new/images/no-prd.jpg"
-                        }
-                        width="250px"
-                        height="200px"
-                      />
-                    )}
-                  </Card.Section>
-                  <Group position="apart" mt="md" mb="xs">
-                    {/* <Title order={5}>{agent.name}</Title> */}
-                    <Badge color="green">{map.name}</Badge>
-                    {/* <Badge color="yellow">{map.role}</Badge> */}
-                  </Group>
-                  {/* <Text size="sm" color="dimmed">
+        <Group position="apart">
+          <Title order={3} align="center">
+            Maps
+          </Title>
+          {isAdmin && (
+            <Button component={Link} to="/add_map" color="green">
+              Add New
+            </Button>
+          )}
+        </Group>
+        <Space h="20px" />
+        <LoadingOverlay visible={isLoading} />
+        <Grid>
+          {currentMaps
+            ? currentMaps.map((map) => {
+                return (
+                  <Grid.Col key={map._id} lg={3} md={6} sm={6} xs={6}>
+                    <Card shadow="sm" padding="md" radius="md" withBorder>
+                      <Card.Section>
+                        {map.image && map.image !== "" ? (
+                          <>
+                            <Image
+                              src={"http://localhost:5000/" + map.image}
+                              width="100%"
+                              // height="200px"
+                            />
+                          </>
+                        ) : (
+                          <Image
+                            src={
+                              "https://www.aachifoods.com/templates/default-new/images/no-prd.jpg"
+                            }
+                            width="250px"
+                            height="200px"
+                          />
+                        )}
+                      </Card.Section>
+                      <Group position="apart" mt="md" mb="xs">
+                        {/* <Title order={5}>{agent.name}</Title> */}
+                        <Badge color="green">{map.name}</Badge>
+                        {/* <Badge color="yellow">{map.role}</Badge> */}
+                      </Group>
+                      {/* <Text size="sm" color="dimmed">
                     {map.description}
                   </Text> */}
-                  {/* <Button
+                      {/* <Button
                       fullWidth
                       onClick={() => {
                         if (cookies && cookies.currentUser) {
@@ -151,41 +153,42 @@ export default function Maps() {
                       {" "}
                       Add To Cart
                     </Button> */}
-                  {isAdmin && (
-                    <>
-                      <Space h="20px" />
-                      <Group position="apart">
-                        <Button
-                          component={Link}
-                          to={"/maps/" + map._id}
-                          color="blue"
-                          size="xs"
-                          radius="50px"
-                        >
-                          Edit
-                        </Button>
-                        <Button
-                          color="red"
-                          size="xs"
-                          radius="50px"
-                          onClick={() => {
-                            deleteMutation.mutate({
-                              id: map._id,
-                              token: currentUser ? currentUser.token : "",
-                            });
-                          }}
-                        >
-                          Delete
-                        </Button>
-                      </Group>
-                    </>
-                  )}
-                  {/* </Card> */}
-                </Grid.Col>
-              );
-            })
-          : null}
-      </Grid>
+                      {isAdmin && (
+                        <>
+                          <Space h="20px" />
+                          <Group position="apart">
+                            <Button
+                              component={Link}
+                              to={"/maps/" + map._id}
+                              color="blue"
+                              size="xs"
+                              radius="50px"
+                            >
+                              Edit
+                            </Button>
+                            <Button
+                              color="red"
+                              size="xs"
+                              radius="50px"
+                              onClick={() => {
+                                deleteMutation.mutate({
+                                  id: map._id,
+                                  token: currentUser ? currentUser.token : "",
+                                });
+                              }}
+                            >
+                              Delete
+                            </Button>
+                          </Group>
+                        </>
+                      )}
+                    </Card>
+                  </Grid.Col>
+                );
+              })
+            : null}
+        </Grid>
+      </Container>
     </>
   );
 }

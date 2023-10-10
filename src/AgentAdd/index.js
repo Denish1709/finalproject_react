@@ -25,7 +25,6 @@ export default function AgentAdd() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [basicAbilities, setBasicAbilities] = useState("");
-  const [passiveAbilities, setPassiveAbilities] = useState("");
   const [signatureAbilities, setSignatureAbilities] = useState("");
   const [ultimateAbilities, setUltimateAbilities] = useState("");
   const [role, setRole] = useState("");
@@ -64,7 +63,6 @@ export default function AgentAdd() {
         name: name,
         description: description,
         basicAbilities: basicAbilities,
-        passiveAbilities: passiveAbilities,
         signatureAbilities: signatureAbilities,
         ultimateAbilities: ultimateAbilities,
         role: role,
@@ -132,16 +130,7 @@ export default function AgentAdd() {
           withAsterisk
           onChange={(event) => setBasicAbilities(event.target.value)}
         />
-        <Divider />
-        <Space h="20px" />
-        <TextInput
-          value={passiveAbilities}
-          placeholder="Enter the passive abilities here"
-          label="Passive Abilities"
-          description="The description for the product"
-          withAsterisk
-          onChange={(event) => setPassiveAbilities(event.target.value)}
-        />
+
         <Space h="20px" />
         <Divider />
         <Space h="20px" />

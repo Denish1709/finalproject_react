@@ -28,7 +28,6 @@ function AgentsEdit() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [basicAbilities, setBasicAbilities] = useState("");
-  const [passiveAbilities, setPassiveAbilities] = useState("");
   const [signatureAbilities, setSignatureAbilities] = useState("");
   const [ultimateAbilities, setUltimateAbilities] = useState("");
   const [role, setRole] = useState("");
@@ -42,7 +41,6 @@ function AgentsEdit() {
       setName(data.name);
       setDescription(data.description);
       setBasicAbilities(data.basicAbilities);
-      setPassiveAbilities(data.passiveAbilities);
       setSignatureAbilities(data.signatureAbilities);
       setUltimateAbilities(data.ultimateAbilities);
       setRole(data.role);
@@ -83,9 +81,7 @@ function AgentsEdit() {
         name: name,
         description: description,
         basicAbilities: basicAbilities,
-        passiveAbilities: passiveAbilities,
-        signatureAbilities,
-        signatureAbilities,
+        signatureAbilities: signatureAbilities,
         ultimateAbilities: ultimateAbilities,
         role: role,
         image: image,
@@ -177,17 +173,6 @@ function AgentsEdit() {
         <Divider />
         <Space h="20px" />
         <TextInput
-          value={passiveAbilities}
-          placeholder="Enter the passive abilities here"
-          label="Passive Abilities"
-          description="The description for the product"
-          withAsterisk
-          onChange={(event) => setPassiveAbilities(event.target.value)}
-        />
-        <Space h="20px" />
-        <Divider />
-        <Space h="20px" />
-        <TextInput
           value={signatureAbilities}
           placeholder="Enter the signature abilities here"
           label="Signature Abilities"
@@ -205,27 +190,6 @@ function AgentsEdit() {
           withAsterisk
           onChange={(event) => setUltimateAbilities(event.target.value)}
         />
-        {/* <Space h="20px" />
-        {image && image !== "" ? (
-          <>
-            <Image src={"http://localhost:5000/" + image} width="100%" />
-            <Button color="dark" mt="15px" onClick={() => setImage("")}>
-              Remove Image
-            </Button>
-          </>
-        ) : (
-          <Dropzone
-            mutiple={false}
-            accept={IMAGE_MIME_TYPE}
-            onDrop={(files) => {
-              handleImageUpload(files);
-            }}
-          >
-            <Title order={4} align="center" py="20px">
-              Click To Upload Or Drag Image To Upload
-            </Title>
-          </Dropzone>
-        )} */}
         <Space h="20px" />
         <Divider />
         <Space h="20px" />
@@ -240,9 +204,11 @@ function AgentsEdit() {
           onChange={(event) => setRole(event.target.value)}
         />
         <Space h="20px" />
-        <Button fullWidth onClick={handleUpdateAgent}>
-          Edit Agent
-        </Button>
+        {isAdmin ? (
+          <Button fullWidth onClick={handleUpdateAgent}>
+            Edit Agent
+          </Button>
+        ) : null}
       </Card>
       <Space h="20px" />
       <Group position="center">

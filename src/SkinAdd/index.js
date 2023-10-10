@@ -23,11 +23,20 @@ export default function AgentAdd() {
   const [cookies] = useCookies(["currentUser"]);
   const { currentUser } = cookies;
   const navigate = useNavigate();
-  const [name, setName] = useState("");
+  const [skinName, setSkinName] = useState("");
   const [image1, setImage1] = useState("");
+  const [gunName2, setGunName2] = useState("");
+  // const [price, setPrice] = useState("");
+  const [bundlePrice, setBundlePrice] = useState("");
+  const [gunPrice, setGunPrice] = useState("");
+  const [meleePrice, setMeleePrice] = useState("");
+
   const [image2, setImage2] = useState("");
+  const [gunName3, setGunName3] = useState("");
   const [image3, setImage3] = useState("");
+  const [gunName4, setGunName4] = useState("");
   const [image4, setImage4] = useState("");
+  const [gunName5, setGunName5] = useState("");
   const [image5, setImage5] = useState("");
 
   const [uploading, setUploading] = useState(false);
@@ -47,7 +56,7 @@ export default function AgentAdd() {
         title: "New Skin Added",
         color: "green",
       });
-      navigate("/");
+      navigate("/skins");
     },
     onError: (error) => {
       notifications.show({
@@ -61,11 +70,18 @@ export default function AgentAdd() {
     event.preventDefault();
     createMutation.mutate({
       data: JSON.stringify({
-        name: name,
+        skinName: skinName,
         image1: image1,
+        bundlePrice: bundlePrice,
+        gunPrice: gunPrice,
+        meleePrice: meleePrice,
+        gunName2: gunName2,
         image2: image2,
+        gunName3: gunName3,
         image3: image3,
+        gunName4: gunName4,
         image4: image4,
+        gunName5: gunName5,
         image5: image5,
       }),
       token: currentUser ? currentUser.token : "",
@@ -123,7 +139,7 @@ export default function AgentAdd() {
   const uploadMutation4 = useMutation({
     mutationFn: addSkinImage,
     onSuccess: (data) => {
-      setImage1(data.image_url);
+      setImage4(data.image_url);
 
       // setUploading(false);
     },
@@ -190,22 +206,45 @@ export default function AgentAdd() {
           <Tabs.Tab value="secImg">Secondary Image</Tabs.Tab>
           <Tabs.Tab value="riffle">Riffle</Tabs.Tab>
           <Tabs.Tab value="shotgun">Shotgun</Tabs.Tab>
-          <Tabs.Tab value="smg">SMG</Tabs.Tab>
+          <Tabs.Tab value="dagger">Dagger</Tabs.Tab>
         </Tabs.List>
 
         <Tabs.Panel value="mainImg" pt="xs">
           <TextInput
-            value={name}
-            placeholder="Enter the agent name here"
+            value={skinName}
+            placeholder="Enter the bundle name here"
             label="Name"
-            description="The name of the agent"
+            description="The name of the bundle"
             withAsterisk
-            onChange={(event) => setName(event.target.value)}
+            onChange={(event) => setSkinName(event.target.value)}
           />
           <Space h="20px" />
           <Divider />
           <Space h="20px" />
-
+          <NumberInput
+            value={bundlePrice}
+            placeholder="Enter the bundle price here"
+            label="Bundle Price"
+            precision={2}
+            description="The bundle price"
+            withAsterisk
+            onChange={setBundlePrice}
+          />
+          <Space h="20px" />
+          <Divider />
+          <Space h="20px" />
+          <NumberInput
+            value={gunPrice}
+            placeholder="Enter the gun price here"
+            label="Gun Price"
+            precision={2}
+            description="The gun price"
+            withAsterisk
+            onChange={setGunPrice}
+          />
+          <Space h="20px" />
+          <Divider />
+          <Space h="20px" />
           {image1 && image1 !== "" ? (
             <>
               <Image src={"http://localhost:5000/" + image1} width="100%" />
@@ -229,6 +268,17 @@ export default function AgentAdd() {
         </Tabs.Panel>
 
         <Tabs.Panel value="secImg" pt="xs">
+          <TextInput
+            value={gunName2}
+            placeholder="Enter the agent name here"
+            label="Name"
+            description="The name of the agent"
+            withAsterisk
+            onChange={(event) => setGunName2(event.target.value)}
+          />
+          <Space h="20px" />
+          <Divider />
+          <Space h="20px" />
           {image2 && image2 !== "" ? (
             <>
               <Image src={"http://localhost:5000/" + image2} width="100%" />
@@ -248,10 +298,21 @@ export default function AgentAdd() {
                 Click To Upload Or Drag Image To Upload
               </Title>
             </Dropzone>
-          )}{" "}
+          )}
         </Tabs.Panel>
 
         <Tabs.Panel value="riffle" pt="xs">
+          <TextInput
+            value={gunName3}
+            placeholder="Enter the agent name here"
+            label="Name"
+            description="The name of the agent"
+            withAsterisk
+            onChange={(event) => setGunName3(event.target.value)}
+          />
+          <Space h="20px" />
+          <Divider />
+          <Space h="20px" />
           {image3 && image3 !== "" ? (
             <>
               <Image src={"http://localhost:5000/" + image3} width="100%" />
@@ -275,6 +336,17 @@ export default function AgentAdd() {
         </Tabs.Panel>
 
         <Tabs.Panel value="shotgun" pt="xs">
+          <TextInput
+            value={gunName4}
+            placeholder="Enter the agent name here"
+            label="Name"
+            description="The name of the agent"
+            withAsterisk
+            onChange={(event) => setGunName4(event.target.value)}
+          />
+          <Space h="20px" />
+          <Divider />
+          <Space h="20px" />
           {image4 && image4 !== "" ? (
             <>
               <Image src={"http://localhost:5000/" + image4} width="100%" />
@@ -297,7 +369,30 @@ export default function AgentAdd() {
           )}
         </Tabs.Panel>
 
-        <Tabs.Panel value="smg" pt="xs">
+        <Tabs.Panel value="dagger" pt="xs">
+          <TextInput
+            value={gunName5}
+            placeholder="Enter the agent name here"
+            label="Name"
+            description="The name of the agent"
+            withAsterisk
+            onChange={(event) => setGunName5(event.target.value)}
+          />
+          <Space h="20px" />
+          <Divider />
+          <Space h="20px" />
+          <NumberInput
+            value={meleePrice}
+            placeholder="Enter the melee price here"
+            label="Melee Price"
+            precision={2}
+            description="The melee price"
+            withAsterisk
+            onChange={setMeleePrice}
+          />
+          <Space h="20px" />
+          <Divider />
+          <Space h="20px" />
           {image5 && image5 !== "" ? (
             <>
               <Image src={"http://localhost:5000/" + image5} width="100%" />
@@ -318,14 +413,18 @@ export default function AgentAdd() {
               </Title>
             </Dropzone>
           )}
+
+          <Space h="50px" />
+          <Group position="center">
+            {isAdmin ? (
+              <Button fullWidth onClick={handleAddNewSkin}>
+                Add New Skin
+              </Button>
+            ) : null}
+          </Group>
         </Tabs.Panel>
       </Tabs>
       <Space h="20px" />
-      <Button fullWidth onClick={handleAddNewSkin}>
-        Add New Skin
-      </Button>
-
-      <Space h="50px" />
       <Group position="center">
         <Button
           component={Link}

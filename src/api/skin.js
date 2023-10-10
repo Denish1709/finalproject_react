@@ -13,6 +13,7 @@ export const getSkin = async (id) => {
 };
 
 export const addSkin = async ({ data, token = "" }) => {
+  console.log(token);
   const response = await axios({
     method: "POST",
     url: API_URL + "/skins",

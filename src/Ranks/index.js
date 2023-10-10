@@ -80,7 +80,7 @@ export default function Ranks() {
 
   return (
     <>
-      <Container size="100%">
+      <Container>
         <Header title="Ranks" page="ranks" />
         <Group position="apart">
           <Title order={3} align="center">

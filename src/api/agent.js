@@ -56,7 +56,7 @@ export const uploadAgentImage = async (file) => {
 export const updateAgent = async ({ id, data, token = "" }) => {
   const response = await axios({
     method: "PUT",
-    urll: API_URL + "/agents/" + id,
+    url: API_URL + "/agents/" + id,
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + token,

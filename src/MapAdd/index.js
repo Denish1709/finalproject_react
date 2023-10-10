@@ -122,11 +122,11 @@ export default function MapAdd() {
           </Dropzone>
         )}
         <Space h="20px" />
-        {/* {isAdmin ? ( */}
-        <Button fullWidth onClick={handleAddNewMap}>
-          Add New Product
-        </Button>
-        {/* ) : null} */}
+        {isAdmin ? (
+          <Button fullWidth onClick={handleAddNewMap}>
+            Add New Product
+          </Button>
+        ) : null}
       </Card>
       <Space h="50px" />
       <Group position="center">
