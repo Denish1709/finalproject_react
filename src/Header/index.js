@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 export default function Header({ page = "" }) {
   const [opened, { open, close }] = useDisclosure(false);
   const [cookies, setCookies, removeCookies] = useCookies(["currentUser"]);
+  const navigate = useNavigate();
   return (
     <div className="header">
       <Group position="center">
@@ -97,8 +98,7 @@ export default function Header({ page = "" }) {
                         removeCookies("currentUser");
 
                         clearCartItems();
-
-                        window.location.reload();
+                        navigate("/");
                       }}
                     >
                       Logout
