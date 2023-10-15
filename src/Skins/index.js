@@ -3,12 +3,10 @@ import {
   Card,
   Title,
   Image,
-  Text,
   Container,
   Badge,
   Button,
   Group,
-  Table,
   Space,
   Grid,
   LoadingOverlay,
@@ -20,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchSkins, deleteSkin } from "../api/skin";
 import { addToCart, getCartItems } from "../api/cart";
+import { fetchOrders } from "../api/order";
 
 import { useCookies } from "react-cookie";
 
@@ -28,17 +27,16 @@ export default function Skins() {
   const { currentUser } = cookies;
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [skinName, setSkinName] = useState("");
-  const [bundlePrice, setBundlePrice] = useState("");
-  const [image1, setImage1] = useState("");
+  const [category, setCategory] = useState("");
+  const [search, setSearch] = useState("");
   const [currentSkins, setCurrentSkins] = useState([]);
   const { isLoading, data: skins } = useQuery({
     queryKey: ["skins"],
     queryFn: () => fetchSkins(),
   });
-  const { data: cart = [] } = useQuery({
-    queryKey: ["cart"],
-    queryFn: getCartItems,
+  const { data: orders = [] } = useQuery({
+    queryKey: ["orders"],
+    queryFn: () => fetchOrders(currentUser ? currentUser.token : ""),
   });
 
   const isAdmin = useMemo(() => {
@@ -51,18 +49,25 @@ export default function Skins() {
 
   useEffect(() => {
     let newList = skins ? [...skins] : [];
-    if (skinName !== "") {
-      newList = newList.filter((s) => s.skinName === skinName);
+
+    if (search) {
+      newList = newList.filter(
+        (g) => g.skinName.toLowerCase().indexOf(search.toLowerCase()) >= 0
+      );
+    }
+
+    if (category !== "") {
+      newList = newList.filter((s) => s.category === category);
     }
     setCurrentSkins(newList);
-  }, [skins, skinName]);
+  }, [skins, category, search]);
 
-  const skinNameOptions = useMemo(() => {
+  const categoryOptions = useMemo(() => {
     let options = [];
     if (skins && skins.length > 0) {
       skins.forEach((skin) => {
-        if (!options.includes(skin.skinName)) {
-          options.push(skin.skinName);
+        if (!options.includes(skin.category)) {
+          options.push(skin.category);
         }
       });
     }
@@ -98,33 +103,102 @@ export default function Skins() {
   return (
     <>
       <Container>
-        <Header title="Skin" page="skins" text="" />
-
-        <Group position="apart">
-          <Title order={3} align="center">
-            SKINS
+        <Space h="50px" />
+        <Group position="center">
+          <Title order={3} align="center" color="#778899">
+            <strong style={{ fontFamily: "Courier New", fontSize: "40px" }}>
+              SKINS
+            </strong>
           </Title>
+        </Group>
+        <Space h="30px" />
+        <Header title="Skin" page="skins" text="" />
+        <Space h="30px" />
+        <Group position="right">
           {isAdmin && (
-            <Button component={Link} to="/add_skin" color="green">
+            <Button
+              component={Link}
+              to="/add_skin"
+              color="cyan"
+              style={{
+                fontFamily: "Courier New",
+              }}
+            >
               ADD NEW SKIN
             </Button>
           )}
         </Group>
-        <Space h="20px" />
-
+        <Space h="30px" />
+        <Group position="apart">
+          <Group>
+            <div className="col-6">
+              <input
+                type="text"
+                style={{
+                  fontFamily: "Courier New",
+                  padding: "5px",
+                }}
+                placeholder="Search"
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                }}
+              />
+            </div>
+          </Group>
+          <Group>
+            <select
+              value={category}
+              style={{
+                backgroundColor: "#483D8B",
+                padding: "5px",
+                color: "white",
+                fontFamily: "Courier New",
+              }}
+              onChange={(event) => {
+                setCategory(event.target.value);
+              }}
+            >
+              <option value="" style={{ fontFamily: "Courier New" }}>
+                All Skins
+              </option>
+              {categoryOptions.map((category) => {
+                return (
+                  <option
+                    key={category}
+                    value={category}
+                    style={{ fontFamily: "Courier New" }}
+                  >
+                    {category}
+                  </option>
+                );
+              })}
+            </select>
+          </Group>
+        </Group>
+        <Space h="50px" />
+        <LoadingOverlay visible={isLoading} />
         <Grid>
           {currentSkins
             ? currentSkins.map((skin) => {
                 return (
-                  <Grid.Col key={skin._id} lg={3} md={6} sm={6} xs={6}>
-                    <Card shadow="sm" padding="md" radius="md" withBorder>
+                  <Grid.Col key={skin._id} lg={4} md={3} sm={6} xs={6}>
+                    <Card
+                      shadow="sm"
+                      padding="md"
+                      radius="md"
+                      style={{
+                        backgroundColor: "#708090",
+                      }}
+                      withBorder
+                    >
                       <Card.Section>
-                        {skin.image1 && skin.image1 !== "" ? (
+                        {skin.image && skin.image !== "" ? (
                           <>
                             <Image
-                              src={"http://localhost:5000/" + skin.image1}
+                              src={"http://localhost:5000/" + skin.image}
                               width="100%"
-                              // height="550px"
+                              height="200px"
                             />
                           </>
                         ) : (
@@ -133,22 +207,33 @@ export default function Skins() {
                               "https://www.aachifoods.com/templates/default-new/images/no-prd.jpg"
                             }
                             width="300px"
-                            // height="200px"
                           />
                         )}
                       </Card.Section>
-                      <Group position="apart" mt="md" mb="xs">
+                      <Group position="center" mt="md" mb="xs">
+                        <strong
+                          style={{
+                            fontFamily: "Courier New",
+                            fontSize: "20px",
+                          }}
+                        >
+                          {skin.skinName}
+                        </strong>
                         <Group position="center">
-                          <h5>{skin.skinName}</h5>
-                          <Badge color="green">{skin.bundlePrice}</Badge>
-
+                          <Group>
+                            <Badge color="green">RM{skin.price}</Badge>
+                          </Group>
+                          <Space h="20px" />
                           {isAdmin && (
                             <>
-                              <Space h="20px" />
                               <Button
                                 color="red"
-                                // size="xs"
-                                // radius="50px"
+                                size="md"
+                                radius="50px"
+                                style={{
+                                  fontFamily: "Courier New",
+                                  fontSize: "15px",
+                                }}
                                 fullWidth
                                 onClick={() => {
                                   deleteMutation.mutate({
@@ -161,29 +246,28 @@ export default function Skins() {
                               </Button>
                             </>
                           )}
-                          <Button
-                            component={Link}
-                            to={"/skins/" + skin._id}
-                            color="green"
-                            fullWidth
-                          >
-                            Detail
-                          </Button>
                         </Group>
 
                         <Button
+                          style={{
+                            fontFamily: "Courier New",
+                            fontSize: "15px",
+                          }}
                           fullWidth
                           onClick={() => {
-                            // pop a messsage if user is not logged in
                             if (cookies && cookies.currentUser) {
-                              addToCartMutation.mutate(skins);
+                              addToCartMutation.mutate(skin);
                             } else {
                               notifications.show({
                                 title: "Please login to proceed",
                                 message: (
                                   <>
                                     <Button
-                                      color="red"
+                                      color="blue"
+                                      style={{
+                                        fontFamily: "Courier New",
+                                        fontSize: "15px",
+                                      }}
                                       onClick={() => {
                                         navigate("/login");
                                         notifications.clean();
@@ -193,7 +277,7 @@ export default function Skins() {
                                     </Button>
                                   </>
                                 ),
-                                color: "red",
+                                color: "blue",
                               });
                             }
                           }}

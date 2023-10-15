@@ -3,6 +3,7 @@ import {
   Space,
   TextInput,
   Card,
+  Title,
   Button,
   Group,
   Grid,
@@ -27,15 +28,12 @@ export default function Signup() {
   const [confirmPassword, setConfirmPassword] = useState();
   const [visible, { toggle }] = useDisclosure(false);
 
-  // sign up mutation
   const signMutation = useMutation({
     mutationFn: registerUser,
     onSuccess: (user) => {
-      // store user data into cookies
       setCookie("currentUser", user, {
-        maxAge: 60 * 60 * 24 * 14, // expire in 14 days
+        maxAge: 60 * 60 * 24 * 14,
       });
-      // redirect to home
       navigate("/");
     },
     onError: (error) => {
@@ -46,7 +44,6 @@ export default function Signup() {
     },
   });
 
-  // handle submit
   const handleSubmit = () => {
     if (!name || !email || !password || !confirmPassword) {
       notifications.show({
@@ -70,6 +67,15 @@ export default function Signup() {
   };
   return (
     <Container>
+      <Space h="20px" />
+      <Group position="center">
+        <Title order={3} align="center" color="#778899">
+          <strong style={{ fontFamily: "Courier New", fontSize: "40px" }}>
+            Sign Up
+          </strong>
+        </Title>
+      </Group>
+      <Space h="50px" />
       <Header title="Sign Up A New Account" page="signup" />
       <Space h="50px" />
       <Card
@@ -81,11 +87,20 @@ export default function Signup() {
           maxWidth: "700px",
         }}
       >
+        <Group position="center">
+          <img
+            src="https://www.riotgames.com/darkroom/800/c27d8bd8fbaca635086a6b839ad202ee:03777eeb4b8eca2df704b5694c5ef770/002-rg-2021-full-lockup-offwhite-1.jpg"
+            width="250px"
+            height="150px"
+          />
+        </Group>
+        <Space h="30px" />
         <Grid gutter={20}>
           <Grid.Col span={6}>
             <TextInput
               value={name}
               placeholder="Name"
+              style={{ fontFamily: "Courier New", fontWeight: "bold" }}
               label="Name"
               required
               onChange={(event) => setName(event.target.value)}
@@ -94,6 +109,7 @@ export default function Signup() {
             <TextInput
               value={email}
               placeholder="Email"
+              style={{ fontFamily: "Courier New", fontWeight: "bold" }}
               label="Email"
               required
               onChange={(event) => setEmail(event.target.value)}
@@ -103,6 +119,7 @@ export default function Signup() {
             <PasswordInput
               value={password}
               placeholder="Password"
+              style={{ fontFamily: "Courier New", fontWeight: "bold" }}
               label="Password"
               visible={visible}
               onVisibilityChange={toggle}
@@ -113,6 +130,7 @@ export default function Signup() {
             <PasswordInput
               value={confirmPassword}
               placeholder="Confirm Password"
+              style={{ fontFamily: "Courier New", fontWeight: "bold" }}
               label="Confirm Password"
               visible={visible}
               onVisibilityChange={toggle}
@@ -123,15 +141,33 @@ export default function Signup() {
         </Grid>
         <Space h="40px" />
         <Group position="center">
-          <Button onClick={handleSubmit}>Submit</Button>
+          <Button
+            fullWidth
+            style={{ fontFamily: "Courier New", fontWeight: "bold" }}
+            onClick={handleSubmit}
+          >
+            Submit
+          </Button>
         </Group>
       </Card>
       <Space h="20px" />
       <Group position="center">
-        <Button component={Link} to="/" variant="subtle" size="xs" color="gray">
+        <Button
+          component={Link}
+          to="/"
+          variant="subtle"
+          size="xs"
+          color="gray"
+          style={{
+            fontFamily: "Courier New",
+            fontWeight: "bold",
+            fontSize: "15px",
+          }}
+        >
           Go back to Home
         </Button>
       </Group>
+      <Space h="100px" />
     </Container>
   );
 }

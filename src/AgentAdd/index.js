@@ -76,10 +76,8 @@ export default function AgentAdd() {
     mutationFn: addAgentImage,
     onSuccess: (data) => {
       setImage(data.image_url);
-      // setUploading(false);
     },
     onError: (error) => {
-      // setUploading(false);
       notifications.show({
         title: error.response.data.message,
         color: "red",
@@ -95,7 +93,11 @@ export default function AgentAdd() {
   return (
     <Container>
       <Space h="50px" />
-      <Title order={2} align="center">
+      <Title
+        order={2}
+        align="center"
+        style={{ fontFamily: "Courier New", fontSize: "30px" }}
+      >
         Add New Agent
       </Title>
       <Space h="50px" />
@@ -103,6 +105,7 @@ export default function AgentAdd() {
         <TextInput
           value={name}
           placeholder="Enter the agent name here"
+          style={{ fontFamily: "Courier New", fontWeight: "bold" }}
           label="Name"
           description="The name of the agent"
           withAsterisk
@@ -114,6 +117,7 @@ export default function AgentAdd() {
         <TextInput
           value={description}
           placeholder="Enter the description here"
+          style={{ fontFamily: "Courier New", fontWeight: "bold" }}
           label="Description"
           description="The description for the product"
           withAsterisk
@@ -125,6 +129,7 @@ export default function AgentAdd() {
         <TextInput
           value={basicAbilities}
           placeholder="Enter the basic abilities here"
+          style={{ fontFamily: "Courier New", fontWeight: "bold" }}
           label="Basic Abilities"
           description="The description for the product"
           withAsterisk
@@ -137,6 +142,7 @@ export default function AgentAdd() {
         <TextInput
           value={signatureAbilities}
           placeholder="Enter the signature abilities here"
+          style={{ fontFamily: "Courier New", fontWeight: "bold" }}
           label="Signature Abilities"
           description="The description for the product"
           withAsterisk
@@ -147,6 +153,7 @@ export default function AgentAdd() {
         <TextInput
           value={ultimateAbilities}
           placeholder="Enter the ultimate abilities here"
+          style={{ fontFamily: "Courier New", fontWeight: "bold" }}
           label="Ultimate Abilities"
           description="The description for the product"
           withAsterisk
@@ -156,7 +163,12 @@ export default function AgentAdd() {
         {image && image !== "" ? (
           <>
             <Image src={"http://localhost:5000/" + image} width="100%" />
-            <Button color="dark" mt="15px" onClick={() => setImage("")}>
+            <Button
+              color="dark"
+              mt="15px"
+              style={{ fontFamily: "Courier New", fontWeight: "bold" }}
+              onClick={() => setImage("")}
+            >
               Remove Image
             </Button>
           </>
@@ -168,7 +180,12 @@ export default function AgentAdd() {
               handleImageUpload(files);
             }}
           >
-            <Title order={4} align="center" py="20px">
+            <Title
+              order={4}
+              align="center"
+              py="20px"
+              style={{ fontFamily: "Courier New", fontWeight: "bold" }}
+            >
               Click To Upload Or Drag Image To Upload
             </Title>
           </Dropzone>
@@ -181,6 +198,7 @@ export default function AgentAdd() {
         <TextInput
           value={role}
           placeholder="Enter the role at here"
+          style={{ fontFamily: "Courier New", fontWeight: "bold" }}
           label="Role"
           description="What is the role for this"
           withAsterisk
@@ -188,13 +206,28 @@ export default function AgentAdd() {
         />
 
         <Space h="20px" />
-        <Button fullWidth onClick={handleAddNewAgent}>
+        <Button
+          fullWidth
+          style={{ fontFamily: "Courier New", fontWeight: "bold" }}
+          onClick={handleAddNewAgent}
+        >
           Add New
         </Button>
       </Card>
       <Space h="50px" />
       <Group position="center">
-        <Button component={Link} to="/" variant="subtle" size="xs" color="gray">
+        <Button
+          component={Link}
+          to="/"
+          variant="subtle"
+          size="xs"
+          color="gray"
+          style={{
+            fontFamily: "Courier New",
+            fontWeight: "bold",
+            fontSize: "15px",
+          }}
+        >
           Go back to Home
         </Button>
       </Group>

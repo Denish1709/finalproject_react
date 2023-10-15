@@ -5,7 +5,6 @@ import {
   Space,
   Card,
   TextInput,
-  NumberInput,
   Divider,
   Button,
   Group,
@@ -68,10 +67,8 @@ export default function RankAdd() {
     mutationFn: addRankImage,
     onSuccess: (data) => {
       setImage(data.image_url);
-      // setUploading(false);
     },
     onError: (error) => {
-      // setUploading(false);
       notifications.show({
         title: error.response.data.message,
         color: "red",
@@ -87,7 +84,7 @@ export default function RankAdd() {
   return (
     <Container>
       <Space h="50px" />
-      <Title order={2} align="center">
+      <Title order={2} align="center" style={{ fontFamily: "Courier New" }}>
         Add New Agent
       </Title>
       <Space h="50px" />
@@ -95,6 +92,10 @@ export default function RankAdd() {
         <TextInput
           value={name}
           placeholder="Enter the rank here"
+          style={{
+            fontFamily: "Courier New",
+            fontWeight: "bold",
+          }}
           label="Rank"
           description="The rank"
           withAsterisk
@@ -106,6 +107,7 @@ export default function RankAdd() {
         <TextInput
           value={rank}
           placeholder="Enter the rank category here"
+          style={{ fontFamily: "Courier New", fontWeight: "bold" }}
           label="Category"
           description="The category of the rank"
           withAsterisk
@@ -115,7 +117,12 @@ export default function RankAdd() {
         {image && image !== "" ? (
           <>
             <Image src={"http://localhost:5000/" + image} width="100%" />
-            <Button color="dark" mt="15px" onClick={() => setImage("")}>
+            <Button
+              color="dark"
+              mt="15px"
+              style={{ fontFamily: "Courier New", fontWeight: "bold" }}
+              onClick={() => setImage("")}
+            >
               Remove Image
             </Button>
           </>
@@ -127,22 +134,40 @@ export default function RankAdd() {
               handleImageUpload(files);
             }}
           >
-            <Title order={4} align="center" py="20px">
+            <Title
+              order={4}
+              align="center"
+              py="20px"
+              style={{ fontFamily: "Courier New", fontWeight: "bold" }}
+            >
               Click To Upload Or Drag Image To Upload
             </Title>
           </Dropzone>
         )}
         <Space h="20px" />
-        {isAdmin ? (
-          <Button fullWidth onClick={handleAddNewRank}>
-            Add New
-          </Button>
-        ) : null}
+        <Button
+          fullWidth
+          style={{ fontFamily: "Courier New", fontWeight: "bold" }}
+          onClick={handleAddNewRank}
+        >
+          Add New
+        </Button>
       </Card>
       <Space h="50px" />
       <Group position="center">
-        <Button component={Link} to="/" variant="subtle" size="xs" color="gray">
-          Go back to Home
+        <Button
+          component={Link}
+          to="/ranks"
+          variant="subtle"
+          size="xs"
+          color="gray"
+          style={{
+            fontFamily: "Courier New",
+            fontWeight: "bold",
+            fontSize: "15px",
+          }}
+        >
+          View Rank
         </Button>
       </Group>
       <Space h="50px" />

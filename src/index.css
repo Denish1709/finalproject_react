@@ -1,13 +1,18 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* background-image: url("https://images.contentstack.io/v3/assets/bltb6530b271fddd0b1/bltcb5e329fe91bc77b/5ee7d0c700210d383b3d3000/VALORANT_Maps_Article_Split_Banner.jpg"); */
+  /* background-image: url("https://preview.redd.it/valorant-episode-7-deadlock-wallpaper-edited-by-me-v0-jhlhwm16b69b1.png?width=2732&format=png&auto=webp&s=7a89da9a9d06220355568597ffc9a379fc4cce76"); */
+  background-image: url("https://wallpapercave.com/wp/wp7282583.jpg");
+  background-attachment: fixed;
+  background-position: center;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }

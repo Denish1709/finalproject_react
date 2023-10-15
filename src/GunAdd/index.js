@@ -5,7 +5,6 @@ import {
   Space,
   Card,
   TextInput,
-  NumberInput,
   Divider,
   Button,
   Group,
@@ -85,7 +84,11 @@ function GunAdd() {
   return (
     <Container>
       <Space h="50px" />
-      <Title order={2} align="center">
+      <Title
+        order={2}
+        align="center"
+        style={{ fontFamily: "Courier New", fontSize: "30px" }}
+      >
         Add New Gun
       </Title>
       <Space h="50px" />
@@ -93,6 +96,7 @@ function GunAdd() {
         <TextInput
           value={name}
           placeholder="Enter the Gun name here"
+          style={{ fontFamily: "Courier New", fontWeight: "bold" }}
           label="Name"
           description="The name of the gun"
           withAsterisk
@@ -104,7 +108,12 @@ function GunAdd() {
         {image && image !== "" ? (
           <>
             <Image src={"http://localhost:5000/" + image} width="100%" />
-            <Button color="dark" mt="15px" onClick={() => setImage("")}>
+            <Button
+              color="dark"
+              mt="15px"
+              style={{ fontFamily: "Courier New", fontWeight: "bold" }}
+              onClick={() => setImage("")}
+            >
               Remove Image
             </Button>
           </>
@@ -116,7 +125,12 @@ function GunAdd() {
               handleImageUpload(files);
             }}
           >
-            <Title order={4} align="center" py="20px">
+            <Title
+              order={4}
+              align="center"
+              py="20px"
+              style={{ fontFamily: "Courier New", fontWeight: "bold" }}
+            >
               Click to upload or Drag image to upload
             </Title>
           </Dropzone>
@@ -127,22 +141,36 @@ function GunAdd() {
         <TextInput
           value={category}
           placeholder="Enter the category at here"
+          style={{ fontFamily: "Courier New" }}
           label="Category"
           description="What is the category for this gun"
           withAsterisk
           onChange={(event) => setCategory(event.target.value)}
         />
         <Space h="20px" />
-        {isAdmin ? (
-          <Button fullWidth onClick={handleAddNewGun}>
-            Add New
-          </Button>
-        ) : null}
+        <Button
+          fullWidth
+          style={{ fontFamily: "Courier New", fontWeight: "bold" }}
+          onClick={handleAddNewGun}
+        >
+          Add New
+        </Button>
       </Card>
       <Space h="50px" />
       <Group position="center">
-        <Button component={Link} to="/" variant="subtle" size="xs" color="gray">
-          Go back to Home
+        <Button
+          component={Link}
+          to="/guns"
+          variant="subtle"
+          size="xs"
+          color="gray"
+          style={{
+            fontFamily: "Courier New",
+            fontWeight: "bold",
+            fontSize: "15px",
+          }}
+        >
+          View Guns
         </Button>
       </Group>
       <Space h="50px" />

@@ -3,7 +3,6 @@ import {
   Card,
   Title,
   Image,
-  Text,
   Container,
   Badge,
   Button,
@@ -15,7 +14,6 @@ import {
 import Header from "../Header";
 import { Link } from "react-router-dom";
 import { notifications } from "@mantine/notifications";
-import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchGuns, deleteGun } from "../api/gun";
 import { useCookies } from "react-cookie";
@@ -23,10 +21,7 @@ import { useCookies } from "react-cookie";
 export default function Guns() {
   const [cookies] = useCookies(["currentUser"]);
   const { currentUser } = cookies;
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [name, setName] = useState("");
-  const [image, setImage] = useState("");
   const [category, setCategory] = useState("");
   const [currentGuns, setCurrentGuns] = useState([]);
   const { isLoading, data: guns } = useQuery({
@@ -78,32 +73,52 @@ export default function Guns() {
   return (
     <>
       <Container>
-        <Header title="Guns" page="guns" text="" />
-        <Space h="20px" />
-
-        <Group position="apart">
-          <Title order={3} align="center">
-            <strong>GUNS</strong>
+        <Space h="50px" />
+        <Group position="center">
+          <Title order={3} align="center" color="#778899">
+            <strong style={{ fontFamily: "Courier New", fontSize: "40px" }}>
+              GUNS
+            </strong>
           </Title>
+        </Group>
+        <Space h="30px" />
+        <Header title="Guns" page="guns" text="" />
+        <Space h="30px" />
+        <Group position="right">
           {isAdmin && (
-            <Button component={Link} to="/add_gun" color="green">
-              <strong>ADD NEW GUN</strong>
+            <Button
+              component={Link}
+              to="/add_gun"
+              color="blue"
+              style={{ fontFamily: "Courier New" }}
+            >
+              ADD NEW GUN
             </Button>
           )}
         </Group>
-        <Space h="20px" />
+        <Space h="30px" />
         <Group>
           <select
             value={category}
+            style={{
+              backgroundColor: "#483D8B",
+              color: "white",
+              fontFamily: "Courier New",
+            }}
             onChange={(event) => {
               setCategory(event.target.value);
-              // setCurrentPage(1);
             }}
           >
-            <option value="">All Category</option>
+            <option value="" style={{ fontFamily: "Courier New" }}>
+              All Category
+            </option>
             {categoryOptions.map((category) => {
               return (
-                <option key={category} value={category}>
+                <option
+                  key={category}
+                  value={category}
+                  style={{ fontFamily: "Courier New" }}
+                >
                   {category}
                 </option>
               );
@@ -117,32 +132,62 @@ export default function Guns() {
             ? currentGuns.map((gun) => {
                 return (
                   <Grid.Col key={gun.id} lg={4} md={6} sm={6} xs={6}>
-                    <Card shadow="sm" padding="md" radius="md" withBorder>
+                    <Card
+                      shadow="sm"
+                      padding="md"
+                      radius="md"
+                      style={{
+                        backgroundColor: "#708090",
+                        width: "300px",
+                        height: "300px",
+                      }}
+                      withBorder
+                    >
                       <Card.Section>
                         <Image
                           src={"http://localhost:5000/" + gun.image}
                           width="100%"
+                          height="150px"
                         />
                       </Card.Section>
+                      <Space h="30px" />
+
                       <Group position="center" mt="md" mb="xs">
-                        <strong>
-                          <h3>
-                            <strong>{gun.name}</strong>
-                          </h3>
-                        </strong>
+                        <Badge
+                          color="blue"
+                          fullWidth
+                          style={{
+                            fontFamily: "Courier New",
+                            fontSize: "20px",
+                            padding: "15px",
+                          }}
+                        >
+                          {gun.name}
+                        </Badge>
                       </Group>
                       <Space h="20px" />
                       {isAdmin && (
                         <>
-                          <Space h="20px" />
                           <Group position="apart">
                             <Group>
-                              <Badge color="yellow">{gun.category}</Badge>
+                              <Badge
+                                color="yellow"
+                                style={{
+                                  fontFamily: "Courier New",
+                                  fontSize: "15px",
+                                }}
+                              >
+                                {gun.category}
+                              </Badge>
                             </Group>
                             <Button
                               color="red"
                               size="xs"
                               radius="50px"
+                              style={{
+                                fontFamily: "Courier New",
+                                fontSize: "10px",
+                              }}
                               onClick={() => {
                                 deleteMutation.mutate({
                                   id: gun._id,
@@ -161,6 +206,7 @@ export default function Guns() {
               })
             : null}
         </Grid>
+        <Space h="100px" />
       </Container>
     </>
   );

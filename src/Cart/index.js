@@ -10,7 +10,6 @@ import {
   Button,
   Image,
   Space,
-  Divider,
 } from "@mantine/core";
 import { Checkbox } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
@@ -27,7 +26,7 @@ export default function Cart() {
 
   const cartTotal = useMemo(() => {
     let total = 0;
-    cart.map((item) => (total = total + item.quantity * item.bundlePrice));
+    cart.map((item) => (total = total + item.quantity * item.price));
     return total;
   }, [cart]);
 
@@ -57,7 +56,7 @@ export default function Cart() {
   };
 
   const deleteCheckedItems = () => {
-    deleteProductsMutation.mutate(checkedList);
+    deleteSkinsMutation.mutate(checkedList);
   };
 
   const deleteMutation = useMutation({
@@ -73,7 +72,7 @@ export default function Cart() {
     },
   });
 
-  const deleteProductsMutation = useMutation({
+  const deleteSkinsMutation = useMutation({
     mutationFn: removeItemsFromCart,
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -83,18 +82,25 @@ export default function Cart() {
         title: "Selected Skins Deleted",
         color: "green",
       });
-      // to reset the checkbox
       setCheckAll(false);
       setCheckedList([]);
     },
   });
-
   return (
     <Container>
       <Space h="50px" />
-      <Header title="Cart" page="cart" />
-      <Space h="35px" />
-      <Table highlightOnHover>
+      <Group position="center">
+        <Title order={3} align="center" color="#778899">
+          <strong style={{ fontFamily: "Courier New", fontSize: "40px" }}>
+            CART
+          </strong>
+        </Title>
+      </Group>
+      <Space h="30px" />
+      <Header title="Cart" page="carts" text="" />
+      <Space h="30px" />
+      <Table>
+        <Space h="30px" />
         <thead>
           <tr>
             <th>
@@ -107,18 +113,58 @@ export default function Cart() {
                 }}
               />
             </th>
-            <th>Skin</th>
+            <th
+              style={{
+                fontFamily: "Courier New",
+                color: "white",
+                fontSize: "20px",
+                paddingLeft: "150px",
+              }}
+            >
+              Skin
+            </th>
             <th></th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Total</th>
-            <th>
+            <th
+              style={{
+                fontFamily: "Courier New",
+                color: "white",
+                fontSize: "20px",
+              }}
+            >
+              Price
+            </th>
+            <th
+              style={{
+                fontFamily: "Courier New",
+                color: "white",
+                fontSize: "20px",
+              }}
+            >
+              Quantity
+            </th>
+            <th
+              style={{
+                fontFamily: "Courier New",
+                color: "white",
+                fontSize: "20px",
+                paddingLeft: "50px",
+              }}
+            >
+              Total
+            </th>
+            <th
+              style={{
+                fontFamily: "Courier New",
+                color: "white",
+                fontSize: "20px",
+              }}
+            >
               <Group position="right">Action</Group>
             </th>
           </tr>
         </thead>
         <tbody>
-          {cart ? (
+          {cart.length > 0 ? (
             cart.map((c) => {
               return (
                 <tr key={c._id}>
@@ -137,10 +183,10 @@ export default function Cart() {
                   </td>
 
                   <td>
-                    {c.image1 && c.image1 !== "" ? (
+                    {c.image && c.image !== "" ? (
                       <>
                         <Image
-                          src={"http://localhost:5000/" + c.image1}
+                          src={"http://localhost:5000/" + c.image}
                           width="150px"
                         />
                       </>
@@ -153,15 +199,54 @@ export default function Cart() {
                       />
                     )}
                   </td>
-                  <td> {c.name}</td>
-                  <td>${c.bundlePrice}</td>
-                  <td>{c.quantity}</td>
-                  <td>${c.bundlePrice * c.quantity}</td>
+                  <td
+                    style={{
+                      fontFamily: "Courier New",
+                      color: "white",
+                      fontSize: "20px",
+                    }}
+                  >
+                    {c.skinName}
+                  </td>
+                  <td
+                    style={{
+                      fontFamily: "Courier New",
+                      color: "white",
+                      fontSize: "20px",
+                    }}
+                  >
+                    RM{c.price}
+                  </td>
+                  <td
+                    style={{
+                      fontFamily: "Courier New",
+                      color: "white",
+                      fontSize: "20px",
+                      paddingLeft: "50px",
+                    }}
+                  >
+                    {c.quantity}
+                  </td>
+                  <td
+                    style={{
+                      fontFamily: "Courier New",
+                      color: "white",
+                      fontSize: "20px",
+                      paddingLeft: "50px",
+                    }}
+                  >
+                    RM{c.price * c.quantity}
+                  </td>
                   <td>
                     <Group position="right">
                       <Button
                         color="red"
                         size="sm"
+                        style={{
+                          fontFamily: "Courier New",
+                          color: "white",
+                          fontSize: "20px",
+                        }}
                         onClick={(event) => {
                           deleteMutation.mutate(c._id);
                         }}
@@ -175,13 +260,30 @@ export default function Cart() {
             })
           ) : (
             <tr>
-              <td colSpan={6}>No Skin Added Yet!</td>
+              <td
+                colSpan={6}
+                style={{
+                  fontFamily: "Courier New",
+                  color: "white",
+                  fontSize: "20px",
+                }}
+              >
+                <h5 align="center">No Skins Added Yet!</h5>
+              </td>
             </tr>
           )}
           <tr>
             <td colSpan={5} className="text-end me-5"></td>
             <td>
-              <strong>${cartTotal}</strong>
+              <strong
+                style={{
+                  fontFamily: "Courier New",
+                  color: "white",
+                  fontSize: "20px",
+                }}
+              >
+                RM{cartTotal}
+              </strong>
             </td>
             <td></td>
           </tr>
@@ -193,6 +295,10 @@ export default function Cart() {
           color="red"
           size="sm"
           className="ms-2"
+          style={{
+            fontFamily: "Courier New",
+            fontSize: "20px",
+          }}
           disabled={checkedList && checkedList.length > 0 ? false : true}
           onClick={(event) => {
             event.preventDefault();
@@ -204,11 +310,16 @@ export default function Cart() {
         <Button
           component={Link}
           to="/checkout"
+          style={{
+            fontFamily: "Courier New",
+            fontSize: "20px",
+          }}
           disabled={cart.length > 0 ? false : true}
         >
           Checkout
         </Button>
       </Group>
+      <Space h="50px" />
     </Container>
   );
 }

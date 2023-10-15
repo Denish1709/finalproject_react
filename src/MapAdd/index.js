@@ -66,10 +66,8 @@ export default function MapAdd() {
     mutationFn: addMapImage,
     onSuccess: (data) => {
       setImage(data.image_url);
-      // setUploading(false);
     },
     onError: (error) => {
-      // setUploading(false);
       notifications.show({
         title: error.response.data.message,
         color: "red",
@@ -85,14 +83,19 @@ export default function MapAdd() {
   return (
     <Container>
       <Space h="50px" />
-      <Title order={2} align="center">
-        Add New Agent
+      <Title
+        order={2}
+        align="center"
+        style={{ fontFamily: "Courier New", fontSize: "30px" }}
+      >
+        Add New Map
       </Title>
       <Space h="50px" />
       <Card withBorder shadow="md" p="20px">
         <TextInput
           value={name}
           placeholder="Enter the map name here"
+          style={{ fontFamily: "Courier New", fontWeight: "bold" }}
           label="Name"
           description="The name of the map"
           withAsterisk
@@ -104,7 +107,12 @@ export default function MapAdd() {
         {image && image !== "" ? (
           <>
             <Image src={"http://localhost:5000/" + image} width="100%" />
-            <Button color="dark" mt="15px" onClick={() => setImage("")}>
+            <Button
+              color="dark"
+              mt="15px"
+              style={{ fontFamily: "Courier New", fontWeight: "bold" }}
+              onClick={() => setImage("")}
+            >
               Remove Image
             </Button>
           </>
@@ -116,22 +124,40 @@ export default function MapAdd() {
               handleImageUpload(files);
             }}
           >
-            <Title order={4} align="center" py="20px">
+            <Title
+              order={4}
+              align="center"
+              py="20px"
+              style={{ fontFamily: "Courier New", fontWeight: "bold" }}
+            >
               Click To Upload Or Drag Image To Upload
             </Title>
           </Dropzone>
         )}
         <Space h="20px" />
-        {isAdmin ? (
-          <Button fullWidth onClick={handleAddNewMap}>
-            Add New Product
-          </Button>
-        ) : null}
+        <Button
+          fullWidth
+          style={{ fontFamily: "Courier New", fontWeight: "bold" }}
+          onClick={handleAddNewMap}
+        >
+          Add New Product
+        </Button>
       </Card>
       <Space h="50px" />
       <Group position="center">
-        <Button component={Link} to="/" variant="subtle" size="xs" color="gray">
-          Go back to Home
+        <Button
+          component={Link}
+          to="/maps"
+          variant="subtle"
+          size="xs"
+          color="gray"
+          style={{
+            fontFamily: "Courier New",
+            fontWeight: "bold",
+            fontSize: "15px",
+          }}
+        >
+          View Maps
         </Button>
       </Group>
       <Space h="50px" />

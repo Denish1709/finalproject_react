@@ -23,7 +23,6 @@ export default function PaymentVerification() {
   const billplz_x_signature = searchParams.get("billplz[x_signature]");
 
   useEffect(() => {
-    // trigger mutation when page loads
     verifyPaymentMutation.mutate(
       JSON.stringify({
         billplz_id: billplz_id,
@@ -37,25 +36,20 @@ export default function PaymentVerification() {
   const verifyPaymentMutation = useMutation({
     mutationFn: verifyPayment,
     onSuccess: (order) => {
-      // check if order is paid or not
       if (order.status === "Paid") {
-        // if it's paid, show paid message
         notifications.show({
           title: "Payment verified",
           color: "green",
         });
       } else if (order.status === "Failed") {
-        // if payment failed, show failed message
         notifications.show({
           title: "Payment failed",
           color: "red",
         });
       }
-      // redirect to orders page
       navigate("/orders");
     },
     onError: (error) => {
-      // when this is an error in API call
       notifications.show({
         title: error.response.data.message,
         color: "red",

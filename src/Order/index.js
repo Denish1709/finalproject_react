@@ -1,22 +1,16 @@
 import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 import {
   Container,
-  Title,
   Table,
   Group,
   Button,
   Image,
+  Title,
   Space,
-  TextInput,
-  Divider,
-  Grid,
-  Text,
   Select,
-  LoadingOverlay,
 } from "@mantine/core";
-import { Checkbox } from "@mantine/core";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { notifications } from "@mantine/notifications";
 import Header from "../Header";
 import { useCookies } from "react-cookie";
@@ -73,19 +67,71 @@ export default function Orders() {
 
   return (
     <>
-      <Container size="100%">
+      <Container>
+        <Space h="50px" />
+        <Group position="center">
+          <Title order={3} align="center" color="#778899">
+            <strong style={{ fontFamily: "Courier New", fontSize: "40px" }}>
+              ORDERS
+            </strong>
+          </Title>
+        </Group>
+        <Space h="50px" />
         <Header title="My Orders" page="orders" />
         <Space h="35px" />
-        {/* <LoadingOverlay visible={isLoading} /> */}
         <Table>
           <thead>
             <tr>
-              <th>Customer</th>
-              <th>Products</th>
-              <th>Total Amount</th>
-              <th>Status</th>
-              <th>Payment Date</th>
-              <th>Action</th>
+              <th
+                style={{
+                  fontFamily: "Courier New",
+                  color: "white",
+                  fontSize: "20px",
+                }}
+              >
+                Customer
+              </th>
+              <th
+                style={{
+                  fontFamily: "Courier New",
+                  color: "white",
+                  fontSize: "20px",
+                  paddingLeft: "40px",
+                }}
+              >
+                Skin Name
+              </th>
+              <th
+                style={{
+                  fontFamily: "Courier New",
+                  color: "white",
+                  fontSize: "20px",
+                }}
+              >
+                Total Amount
+              </th>
+              <th
+                style={{
+                  fontFamily: "Courier New",
+                  color: "white",
+                  fontSize: "20px",
+                  paddingLeft: "100px",
+                }}
+              >
+                Status
+              </th>
+              {isAdmin && (
+                <th
+                  style={{
+                    fontFamily: "Courier New",
+                    color: "white",
+                    fontSize: "20px",
+                    paddingLeft: "40px",
+                  }}
+                >
+                  Action
+                </th>
+              )}
             </tr>
           </thead>
           <tbody>
@@ -93,9 +139,14 @@ export default function Orders() {
               ? orders.map((o) => {
                   return (
                     <tr key={o._id}>
-                      <td>
+                      <td
+                        style={{
+                          fontFamily: "Courier New",
+                          color: "white",
+                          fontSize: "25px",
+                        }}
+                      >
                         {o.customerName}
-                        {/* <br />({o.customerEmail}) */}
                       </td>
                       <td>
                         {o.skins.map((skin, index) => (
@@ -105,7 +156,7 @@ export default function Orders() {
                                 <>
                                   <Image
                                     src={"http://localhost:5000/" + skin.image}
-                                    width="50px"
+                                    width="200px"
                                   />
                                 </>
                               ) : (
@@ -116,15 +167,28 @@ export default function Orders() {
                                   width="50px"
                                 />
                               )}
-                              <p>{skin.name}</p>
+                              <Space h="10px" />
                             </Group>
                           </div>
                         ))}
                       </td>
-                      <td>${o.totalPrice}</td>
+                      <td
+                        style={{
+                          fontFamily: "Courier New",
+                          color: "white",
+                          fontSize: "25px",
+                        }}
+                      >
+                        ${o.totalPrice}
+                      </td>
                       <td>
                         <Select
                           value={o.status}
+                          style={{
+                            fontFamily: "Courier New",
+                            color: "white",
+                            fontSize: "25px",
+                          }}
                           disabled={
                             o.status === "Pending" || !isAdmin ? true : false
                           }
@@ -154,12 +218,15 @@ export default function Orders() {
                           }}
                         />
                       </td>
-                      <td>{o.paid_at}</td>
                       <td>
                         {o.status === "Pending" && isAdmin && (
                           <Button
                             variant="outline"
-                            color="red"
+                            style={{
+                              fontFamily: "Courier New",
+                              color: "white",
+                              fontSize: "25px",
+                            }}
                             onClick={() => {
                               deleteMutation.mutate({
                                 id: o._id,
@@ -177,17 +244,10 @@ export default function Orders() {
               : null}
           </tbody>
         </Table>
-        <Space h="20px" />
+        <Space h="50px" />
         <Group position="center">
-          <Button component={Link} to="/skins">
+          <Button component={Link} fullWidth to="/skins">
             Continue Shopping
-          </Button>
-        </Group>
-        <Space h="20px" />
-
-        <Group position="center">
-          <Button component={Link} to="/">
-            Back to Home
           </Button>
         </Group>
         <Space h="100px" />

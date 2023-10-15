@@ -4,7 +4,6 @@ import {
   Title,
   Image,
   Text,
-  Container,
   Badge,
   Button,
   Group,
@@ -14,27 +13,16 @@ import {
 } from "@mantine/core";
 import { Link } from "react-router-dom";
 import { notifications } from "@mantine/notifications";
-import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchAgents, deleteAgent } from "../api/agent";
-// import { addToCart, getCartItems } from "../api/cart";
 import { useCookies } from "react-cookie";
 
 export default function Agents() {
   const [cookies] = useCookies(["currentUser"]);
   const { currentUser } = cookies;
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [basicAbilities, setBasicAbilities] = useState("");
-  const [passiveAbilities, setPassiveAbilities] = useState("");
-  const [signatureAbilities, setSignatureAbilities] = useState("");
-  const [ultimateAbilities, setUltimateAbilities] = useState("");
   const [role, setRole] = useState("");
-  const [image, setImage] = useState("");
   const [currentAgents, setCurrentAgents] = useState([]);
-  // const [category, setCategory] = useState("");
   const [sort, setSort] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [perPage, setPerPage] = useState(6);
@@ -59,14 +47,12 @@ export default function Agents() {
     }
 
     const total = Math.ceil(newList.length / perPage);
-    // convert the total number into array
     const pages = [];
     for (let i = 1; i <= total; i++) {
       pages.push(i);
     }
     setTotalPages(pages);
 
-    // sorting
     switch (sort) {
       case "name":
         newList = newList.sort((a, b) => {
@@ -74,9 +60,11 @@ export default function Agents() {
         });
         break;
       default:
+        newList = newList.sort((a, b) => {
+          return a.name.localeCompare(b.name);
+        });
         break;
     }
-    // do pagination
     const start = (currentPage - 1) * perPage;
     const end = start + perPage;
 
@@ -112,65 +100,95 @@ export default function Agents() {
 
   return (
     <>
-      <Group position="apart">
-        <Title order={3} align="center">
-          <strong>AGENTS</strong>
+      <Group position="center">
+        <Title order={3} align="center" color="#778899">
+          <strong style={{ fontFamily: "Courier New", fontSize: "40px" }}>
+            AGENTS
+          </strong>
         </Title>
+      </Group>
+      <Group position="right">
         {isAdmin && (
-          <Button component={Link} to="/add_agent" color="red">
+          <Button
+            component={Link}
+            to="/add_agent"
+            color="red"
+            style={{ fontFamily: "Courier New" }}
+          >
             ADD NEW AGENT
           </Button>
         )}
       </Group>
-      <Space h="20px" />
+      <Space h="30px" />
       <Group>
         <select
           value={role}
+          style={{
+            backgroundColor: "#483D8B",
+            color: "white",
+            fontFamily: "Courier New",
+          }}
           onChange={(event) => {
             setRole(event.target.value);
             setCurrentPage(1);
           }}
         >
-          <option value="">All Role</option>
+          <option value="" style={{ fontFamily: "Courier New" }}>
+            All Role
+          </option>
           {roleOptions.map((role) => {
             return (
-              <option key={role} value={role}>
+              <option
+                key={role}
+                value={role}
+                style={{ fontFamily: "Courier New" }}
+              >
                 {role}
               </option>
             );
           })}
         </select>
         <select
-          value={sort}
-          onChange={(event) => {
-            setSort(event.target.value);
-            setCurrentPage(1);
-          }}
-        >
-          <option value="">No Sorting</option>
-          <option value="name">Sort by Name</option>
-        </select>
-        <select
           value={perPage}
+          style={{
+            backgroundColor: "#483D8B",
+            color: "white",
+            fontFamily: "Courier New",
+          }}
           onChange={(event) => {
             setPerPage(parseInt(event.target.value));
-            // reset it back to page 1
             setCurrentPage(1);
           }}
         >
-          <option value="6">6 Per Page</option>
-          <option value="10">10 Per Page</option>
-          <option value={9999999}>All</option>
+          <option value="6" style={{ fontFamily: "Courier New" }}>
+            6 Per Page
+          </option>
+          <option value="10" style={{ fontFamily: "Courier New" }}>
+            10 Per Page
+          </option>
+          <option value={9999999} style={{ fontFamily: "Courier New" }}>
+            All
+          </option>
         </select>
       </Group>
-      <Space h="20px" />
+      <Space h="50px" />
       <LoadingOverlay visible={isLoading} />
       <Grid>
         {currentAgents
           ? currentAgents.map((agent) => {
               return (
                 <Grid.Col key={agent._id} lg={4} md={6} sm={6} xs={6}>
-                  <Card shadow="sm" padding="md" radius="md" withBorder>
+                  <Card
+                    shadow="sm"
+                    padding="md"
+                    radius="md"
+                    style={{
+                      backgroundColor: "#708090",
+                      width: "300px",
+                      height: "680px",
+                    }}
+                    withBorder
+                  >
                     <Card.Section>
                       {agent.image && agent.image !== "" ? (
                         <>
@@ -185,41 +203,78 @@ export default function Agents() {
                           src={
                             "https://www.aachifoods.com/templates/default-new/images/no-prd.jpg"
                           }
-                          width="250px"
-                          // height="200px"
+                          width="100%"
                         />
                       )}
                     </Card.Section>
-                    <Group position="apart" mt="md" mb="xs">
-                      {/* <Badge color="green">{agent.name}</Badge> */}
-
-                      <Badge color="yellow">{agent.role}</Badge>
+                    <Group
+                      position="apart"
+                      mt="md"
+                      mb="xs"
+                      style={{ height: "100px" }}
+                    >
+                      <Badge
+                        color="yellow"
+                        style={{ fontFamily: "Courier New" }}
+                      >
+                        {agent.role}
+                      </Badge>
                       <Group position="left">
-                        <Badge color="violet">{agent.basicAbilities}</Badge>
+                        <Badge
+                          color="violet"
+                          style={{ fontFamily: "Courier New" }}
+                        >
+                          {agent.basicAbilities}
+                        </Badge>
                       </Group>
                       <Group position="right">
-                        <Badge color="light">{agent.signatureAbilities}</Badge>
+                        <Badge
+                          color="light"
+                          style={{ fontFamily: "Courier New" }}
+                        >
+                          {agent.signatureAbilities}
+                        </Badge>
                       </Group>
                       <Group position="left">
-                        <Badge color="red">{agent.ultimateAbilities}</Badge>
+                        <Badge
+                          color="red"
+                          style={{ fontFamily: "Courier New" }}
+                        >
+                          {agent.ultimateAbilities}
+                        </Badge>
                       </Group>
                     </Group>
                     <Space h="30px" />
-                    <Group>
-                      <Title order={2}>{agent.name}</Title>
+                    <Group style={{ height: "200px" }}>
+                      <Title
+                        order={2}
+                        style={{
+                          color: "black",
+                          fontFamily: "Courier New",
+                        }}
+                      >
+                        {agent.name}
+                      </Title>
 
-                      <Text size="sm" color="dimmed">
+                      <Text
+                        size="sm"
+                        color="dimmed"
+                        style={{ color: "black", fontFamily: "Courier New" }}
+                      >
                         {agent.description}
                       </Text>
                     </Group>
+                    <Space h="20px" />
                     {isAdmin && (
                       <>
-                        <Space h="20px" />
+                        <Space h="30px" />
+
                         <Group position="apart">
                           <Button
                             component={Link}
                             to={"/agents/" + agent._id}
                             color="blue"
+                            style={{ fontFamily: "Courier New" }}
                             size="xs"
                             radius="50px"
                           >
@@ -228,6 +283,7 @@ export default function Agents() {
                           <Button
                             color="red"
                             size="xs"
+                            style={{ fontFamily: "Courier New" }}
                             radius="50px"
                             onClick={() => {
                               deleteMutation.mutate({
@@ -248,57 +304,30 @@ export default function Agents() {
           : null}
       </Grid>
       <Space h="40px" />
-      <div>
-        <span style={{ marginRight: "10px" }}>
-          Page {currentPage} of {totalPages.length}
+      <div align="center">
+        <span style={{ marginRight: "10px", color: "white" }}>
+          <strong>
+            PAGE {currentPage} OF {totalPages.length}
+          </strong>
         </span>
-        {totalPages.map((page) => {
-          return (
-            <button
-              key={page}
-              onClick={() => {
-                setCurrentPage(page);
-              }}
-            >
-              {page}
-            </button>
-          );
-        })}
+        <Space h="20px" />
+        <Group position="center">
+          {totalPages.map((page) => {
+            return (
+              <button
+                key={page}
+                style={{ fontFamily: "Courier New" }}
+                onClick={() => {
+                  setCurrentPage(page);
+                }}
+              >
+                {page}
+              </button>
+            );
+          })}
+        </Group>
       </div>
       <Space h="40px" />
     </>
   );
 }
-
-// return (
-//   <Card shadow="sm" padding="lg" radius="md" withBorder>
-//     <Card.Section>
-//       {agent.image && agent.image !== "" ? (
-//         <>
-//           <Image src={"http://localhost:5000/" + agent.image} width="50px" />
-//         </>
-//       ) : (
-//         <Image
-//           src={
-//             "https://www.aachifoods.com/templates/default-new/images/no-prd.jpg"
-//           }
-//           width="50px"
-//         />
-//       )}
-//     </Card.Section>
-
-//     <Group position="apart" mt="md" mb="xs">
-//       <Title order={5}>{agent.name}</Title>
-//       <Badge color="green">{agent.description}</Badge>
-//       <Badge color="yellow">{agent.role}</Badge>
-//     </Group>
-
-//     <Text size="sm" color="dimmed">
-//       {agent.description}
-//     </Text>
-
-//     <Button variant="light" color="blue" fullWidth mt="md" radius="md">
-//       Book classic tour now
-//     </Button>
-//   </Card>
-// );

@@ -1,25 +1,27 @@
 import {
   Group,
   Space,
-  Title,
   Divider,
   Text,
   Button,
   Avatar,
+  Modal,
 } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
-// import { clearCartItems } from "../api/auth";
+import { clearCartItems } from "../api/cart";
 import { useNavigate } from "react-router-dom";
 
 export default function Header({ page = "" }) {
-  const navigate = useNavigate();
+  const [opened, { open, close }] = useDisclosure(false);
   const [cookies, setCookies, removeCookies] = useCookies(["currentUser"]);
   return (
     <div className="header">
       <Group position="center">
         <Button
           component={Link}
+          style={{ fontFamily: "Courier New", fontSize: "15px" }}
           to="/"
           variant={page === "home" ? "filled" : "light"}
         >
@@ -27,6 +29,7 @@ export default function Header({ page = "" }) {
         </Button>
         <Button
           component={Link}
+          style={{ fontFamily: "Courier New", fontSize: "15px" }}
           to="/guns"
           variant={page === "guns" ? "filled" : "light"}
         >
@@ -34,6 +37,7 @@ export default function Header({ page = "" }) {
         </Button>
         <Button
           component={Link}
+          style={{ fontFamily: "Courier New", fontSize: "15px" }}
           to="/maps"
           variant={page === "maps" ? "filled" : "light"}
         >
@@ -41,6 +45,7 @@ export default function Header({ page = "" }) {
         </Button>
         <Button
           component={Link}
+          style={{ fontFamily: "Courier New", fontSize: "15px" }}
           to="/ranks"
           variant={page === "ranks" ? "filled" : "light"}
         >
@@ -48,6 +53,7 @@ export default function Header({ page = "" }) {
         </Button>
         <Button
           component={Link}
+          style={{ fontFamily: "Courier New", fontSize: "15px" }}
           to="/skins"
           variant={page === "skins" ? "filled" : "light"}
         >
@@ -55,68 +61,78 @@ export default function Header({ page = "" }) {
         </Button>
         <Button
           component={Link}
-          to="/orders"
-          variant={page === "orders" ? "filled" : "light"}
-        >
-          My Orders
-        </Button>
-        <Button
-          component={Link}
+          style={{ fontFamily: "Courier New", fontSize: "15px" }}
           to="/carts"
           variant={page === "carts" ? "filled" : "light"}
         >
-          My Cart
+          Cart
+        </Button>
+        <Button
+          component={Link}
+          style={{ fontFamily: "Courier New", fontSize: "15px" }}
+          to="/orders"
+          variant={page === "orders" ? "filled" : "light"}
+        >
+          Orders
         </Button>
 
         <Group position="right">
           {cookies && cookies.currentUser ? (
             <>
               <Group>
-                <Avatar
-                  src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=255&q=80"
-                  radius="xl"
-                />
                 <div style={{ flex: 1 }}>
-                  <Text size="sm" fw={500}>
-                    {cookies.currentUser.name}
-                  </Text>
+                  <Modal
+                    opened={opened}
+                    style={{ fontFamily: "Courier New" }}
+                    onClose={close}
+                    title="Are you sure to logout?"
+                    centered
+                  >
+                    <Button
+                      color="red"
+                      style={{
+                        fontFamily: "Courier New",
+                      }}
+                      onClick={() => {
+                        removeCookies("currentUser");
 
-                  {/* <Text c="dimmed" size="xs">
-                    {cookies.currentUser.email}
-                  </Text> */}
+                        clearCartItems();
+
+                        window.location.reload();
+                      }}
+                    >
+                      Logout
+                    </Button>
+                  </Modal>
+
+                  <Button onClick={open} color="light">
+                    <Avatar
+                      src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                      radius="xl"
+                      w="30px"
+                      h="30px"
+                    />
+                    <Space w="10px" />
+                    <Text size="sm" fw={500} color="dark">
+                      <strong
+                        style={{ fontFamily: "Courier New", fontSize: "15px" }}
+                      >
+                        {cookies.currentUser.name}
+                      </strong>
+                    </Text>
+                  </Button>
                 </div>
               </Group>
-              <Button
-                variant={"light"}
-                onClick={() => {
-                  // clear the currentUser cookie to logout
-                  removeCookies("currentUser");
-
-                  // clear the chat
-                  // clearCartItems();
-
-                  // redirect to home page
-                  navigate("/");
-                }}
-              >
-                Logout
-              </Button>
             </>
           ) : (
             <>
               <Button
                 component={Link}
+                style={{ fontFamily: "Courier New" }}
                 to="/login"
                 variant={page === "login" ? "filled" : "light"}
               >
                 Login
-              </Button>
-              <Button
-                component={Link}
-                to="/signup"
-                variant={page === "signup" ? "filled" : "light"}
-              >
-                Sign Up
               </Button>
             </>
           )}
