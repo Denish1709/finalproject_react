@@ -186,7 +186,7 @@ export default function Cart() {
                     {c.image && c.image !== "" ? (
                       <>
                         <Image
-                          src={"http://localhost:5000/" + c.image}
+                          src={"http://10.1.104.5/" + c.image}
                           width="150px"
                         />
                       </>
