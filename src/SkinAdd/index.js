@@ -88,7 +88,7 @@ export default function AgentAdd() {
     <Container>
       <Space h="50px" />
       <Title order={2} align="center" style={{ fontFamily: "Courier New" }}>
-        Add New Agent
+        Add New Skin
       </Title>
       <Space h="30px" />
       <Card withBorder shadow="md" p="20px">

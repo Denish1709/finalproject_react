@@ -27,14 +27,6 @@ function GunAdd() {
   const [image, setImage] = useState("");
   const [uploading, setUploading] = useState(false);
 
-  const isAdmin = useMemo(() => {
-    return cookies &&
-      cookies.currentUser &&
-      cookies.currentUser.role === "admin"
-      ? true
-      : false;
-  }, [cookies]);
-
   const createMutation = useMutation({
     mutationFn: addGun,
     onSuccess: () => {
@@ -60,6 +52,7 @@ function GunAdd() {
         category: category,
         image: image,
       }),
+      token: currentUser ? currentUser.token : "",
     });
   };
 
@@ -153,7 +146,7 @@ function GunAdd() {
           style={{ fontFamily: "Courier New", fontWeight: "bold" }}
           onClick={handleAddNewGun}
         >
-          Add New
+          Add New Gun
         </Button>
       </Card>
       <Space h="50px" />

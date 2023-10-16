@@ -26,14 +26,6 @@ export default function RankAdd() {
   const [image, setImage] = useState("");
   const [uploading, setUploading] = useState(false);
 
-  const isAdmin = useMemo(() => {
-    return cookies &&
-      cookies.currentUser &&
-      cookies.currentUser.role === "admin"
-      ? true
-      : false;
-  }, [cookies]);
-
   const createMutation = useMutation({
     mutationFn: addRank,
     onSuccess: () => {
@@ -85,7 +77,7 @@ export default function RankAdd() {
     <Container>
       <Space h="50px" />
       <Title order={2} align="center" style={{ fontFamily: "Courier New" }}>
-        Add New Agent
+        Add New Rank
       </Title>
       <Space h="50px" />
       <Card withBorder shadow="md" p="20px">
@@ -150,7 +142,7 @@ export default function RankAdd() {
           style={{ fontFamily: "Courier New", fontWeight: "bold" }}
           onClick={handleAddNewRank}
         >
-          Add New
+          Add New Rank
         </Button>
       </Card>
       <Space h="50px" />

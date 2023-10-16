@@ -98,7 +98,7 @@ export default function Header({ page = "" }) {
                         removeCookies("currentUser");
 
                         clearCartItems();
-                        navigate("/");
+                        window.location = "/";
                       }}
                     >
                       Logout

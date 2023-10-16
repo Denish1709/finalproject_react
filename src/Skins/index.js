@@ -291,6 +291,7 @@ export default function Skins() {
               })
             : null}
         </Grid>
+        <Space h="100px" />
       </Container>
     </>
   );

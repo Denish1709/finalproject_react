@@ -31,14 +31,6 @@ export default function AgentAdd() {
   const [image, setImage] = useState("");
   const [uploading, setUploading] = useState(false);
 
-  const isAdmin = useMemo(() => {
-    return cookies &&
-      cookies.currentUser &&
-      cookies.currentUser.role === "admin"
-      ? true
-      : false;
-  }, [cookies]);
-
   const createMutation = useMutation({
     mutationFn: addAgent,
     onSuccess: () => {

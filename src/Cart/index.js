@@ -282,7 +282,7 @@ export default function Cart() {
                   fontSize: "20px",
                 }}
               >
-                RM{cartTotal}
+                RM{cartTotal.toFixed(2)}
               </strong>
             </td>
             <td></td>
