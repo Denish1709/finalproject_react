@@ -142,7 +142,7 @@ export default function Ranks() {
                         {r.image && r.image !== "" ? (
                           <>
                             <Image
-                              src={"http://10.1.104.5/" + r.image}
+                              src={"http://10.1.104.5:5000/" + r.image}
                               width="200px"
                               height="200px"
                             />

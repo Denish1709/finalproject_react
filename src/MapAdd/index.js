@@ -98,7 +98,7 @@ export default function MapAdd() {
         <Space h="20px" />
         {image && image !== "" ? (
           <>
-            <Image src={"http://10.1.104.5/" + image} width="100%" />
+            <Image src={"http://10.1.104.5:5000/" + image} width="100%" />
             <Button
               color="dark"
               mt="15px"
