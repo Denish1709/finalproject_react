@@ -121,7 +121,7 @@ export default function Maps() {
                         {map.image && map.image !== "" ? (
                           <>
                             <Image
-                              src={"http://localhost:5000/" + map.image}
+                              src={"http://10.1.104.5/" + map.image}
                               width="100%"
                               height="160px"
                             />

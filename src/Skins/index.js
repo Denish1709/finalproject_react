@@ -196,7 +196,7 @@ export default function Skins() {
                         {skin.image && skin.image !== "" ? (
                           <>
                             <Image
-                              src={"http://localhost:5000/" + skin.image}
+                              src={"http://10.1.104.5/" + skin.image}
                               width="100%"
                               height="200px"
                             />

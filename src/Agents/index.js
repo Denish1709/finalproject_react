@@ -193,7 +193,7 @@ export default function Agents() {
                       {agent.image && agent.image !== "" ? (
                         <>
                           <Image
-                            src={"http://localhost:5000/" + agent.image}
+                            src={"http://10.1.104.5/" + agent.image}
                             width="100%"
                             height="200px"
                           />
